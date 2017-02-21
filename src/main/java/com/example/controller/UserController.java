@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.entity.User;
 import com.example.service.DataService;
+import com.example.service.UserRedisService;
 import com.example.service.UserService;
 
 /** 
@@ -31,6 +32,8 @@ public class UserController {
 	private UserService userService;
 	@Autowired
 	private DataService dataService;
+	@Autowired
+	private UserRedisService userRedisService;
 	
 	@RequestMapping("/demo/{name}")
 	@ResponseBody
@@ -63,6 +66,31 @@ public class UserController {
 	public Map<String,Object> getUserByName(@PathVariable String loginName){
 		Map<String,Object> result = new HashMap<String, Object>();
 		User user = userService.readByLoginName(loginName);
+		Assert.notNull(user);
+		result.put("name", user.getName());
+		result.put("loginName", user.getLoginName());
+		result.put("departmentName",user.getDepartment().getName());
+		result.put("roleName", user.getRoleList().get(0).getName());
+		return result;
+	}
+	/** 
+	 * @Title: UserController
+	 * @Description: 初始化redis数据
+	 * @return  
+	 * @author mengfanzhu
+	 * @throws 
+	 */
+	@RequestMapping("/initRedisdata")
+	@ResponseBody
+	public String initRedisData(){
+		userRedisService.redisInitData();
+		return "success";
+	}
+	@RequestMapping("/getUserRedisByLoginName/{loginName}")
+	@ResponseBody
+	public Map<String,Object> getUserRedisByLoginName(@PathVariable String loginName){
+		Map<String,Object> result = new HashMap<String, Object>();
+		User user = userRedisService.getUserRedis(loginName);
 		Assert.notNull(user);
 		result.put("name", user.getName());
 		result.put("loginName", user.getLoginName());

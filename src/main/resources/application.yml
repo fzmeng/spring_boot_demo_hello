@@ -1,14 +1,17 @@
+#server
 server:
   port: 9090
   tomcat:
     uri-encoding: UTF-8  
-  
+
+#spring
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3307/hardess_t1?characterEncoding=UTF-8
-    username: test1
-    password: test1
+    url: jdbc:mysql://10.100.141.39:3307/hardess_t1?characterEncoding=UTF-8
+    username: hardess_t1
+    password: hardess_t1123
     driver-class-name: com.mysql.jdbc.Driver
+  #jpa
   jpa:
     database: MYSQL
     show-sql: true
@@ -18,3 +21,15 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
+  #redis
+  redis:
+    #database:9
+    host: 10.100.141.40
+    port: 6381
+    password: redis6381
+    database: 9
+    pool:
+      max-idle: 8
+      min-idle: 0
+      max-active: 8 
+      max-wait: -1
